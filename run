@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+NAME=darkeditor
+IMAGE_NAME=yokogawa/${NAME}
+docker ps --quiet --all --filter name=${NAME} | xargs -r docker rm >/dev/null
+
+set -x
+if [ "${1}" = "bash" ]; then
+    docker run -i -t --entrypoint="/bin/bash" --name=${NAME} ${IMAGE_NAME}
+else
+    docker run -d -p 9000:9000 --name=${NAME} ${IMAGE_NAME} $@
+fi
+
